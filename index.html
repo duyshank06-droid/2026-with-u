@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Giao Thừa 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background:
+        radial-gradient(circle at top, rgba(255,215,120,0.06), transparent 45%),
+        #000;
+      font-family: system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    /* BOOK */
+    .book {
+      width: 340px;
+      height: 520px;
+      perspective: 1400px;
+      position: relative;
+    }
+
+    /* PAGE */
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #0f0f0f;
+      border-radius: 20px;
+      border: 1px solid rgba(255,215,120,0.18);
+      box-shadow:
+        0 30px 60px rgba(0,0,0,0.75),
+        0 0 35px rgba(255,215,120,0.12);
+
+      transform-origin: left;
+      transform-style: preserve-3d;
+      transition: transform 1s ease;
+      overflow: hidden;
+    }
+
+    .page.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .page-content {
+      position: absolute;
+      inset: 0;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      backface-visibility: hidden;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+      color: #fff;
+      text-shadow: 0 0 14px rgba(255,215,120,0.35);
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.75;
+      opacity: 0.92;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+
+    img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+    }
+
+    button {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #fff, #f3d38a);
+      color: #000;
+      border: none;
+      padding: 10px 26px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255,215,120,0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="book" id="book"></div>
+
+  <audio id="music" loop>
+    <source src="music/all-the-kids-are-depressed.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const pagesData = [
+      {
+        title: "GIAO THỪA 2026",
+        text: "Một khoảnh khắc rất yên.<br>Và anh nghĩ đến em.",
+        img: "images/images1.jpg"
+      },
+      {
+        title: "",
+        text: "Giao thừa không cần ồn ào.<br>Chỉ cần có em.",
+        img: "images/2.jpg"
+      },
+      {
+        title: "",
+        text: "Cảm ơn vì đã bước vào<br>cuộc đời anh.",
+        img: "images/3.jpg"
+      },
+      {
+        title: "",
+        text: "2026 rồi.<br>Mình ở lại, cùng nhau nhé.",
+        img: "images/4.jpg"
+      }
+    ];
+
+    const book = document.getElementById("book");
+    const music = document.getElementById("music");
+    let started = false;
+
+    pagesData.forEach((data, index) => {
+      const page = document.createElement("div");
+      page.className = "page";
+      page.style.zIndex = pagesData.length - index;
+
+      page.innerHTML = `
+        <div class="page-content">
+          ${data.title ? `<h1>${data.title}</h1>` : ""}
+          <p>${data.text}</p>
+          <img src="${data.img}">
+          ${index < pagesData.length - 1 ? `<button>Lật trang</button>` : ""}
+        </div>
+      `;
+
+      page.addEventListener("click", () => {
+        if (!started) {
+          music.play();
+          started = true;
+        }
+        page.classList.add("flipped");
+      });
+
+      book.appendChild(page);
+    });
+  </script>
+
+</body>
+</html>
